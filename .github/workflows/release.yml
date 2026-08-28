@@ -37,6 +37,10 @@ jobs:
           git tag -a "${{ env.TAG_NAME }}" -m "Released version ${{ env.TAG_NAME }}"
           git push origin "${{ env.TAG_NAME }}"
 
+      - name: Fix Source File Permissions
+        run: |
+          find src -type f \( -name "*.java" -o -name "*.properties" \) -exec chmod 644 {} +
+
       - name: Build with Gradle
         run: |
           chmod +x gradlew
