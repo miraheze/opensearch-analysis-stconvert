@@ -46,21 +46,10 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test
 
-      - name: Package Plugin ZIP
-        run: |
-          mkdir -p staging_dir
-          cp opensearch-analysis-stconvert.jar staging_dir/
-          cp plugin-descriptor.properties staging_dir/
-          cp LICENSE.txt staging_dir/
-          cp NOTICE.txt staging_dir/
-          cd staging_dir
-          zip -r ../opensearch-analysis-stconvert.zip *
-          cd ..
-
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ env.TAG_NAME }}" ./opensearch-analysis-stconvert.zip \
+          gh release create "${{ env.TAG_NAME }}" ./build/distributions/opensearch-analysis-stconvert.zip \
             --title "v${{ env.TAG_NAME }}" \
             --notes "Analisys STConvert plugin for OpenSearch version ${{ env.TAG_NAME }}"
